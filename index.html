@@ -754,10 +754,39 @@ function handleFile(f) {
   uploadedFileName = f.name;
   document.getElementById('file-name-display').textContent = f.name;
   document.getElementById('file-pill-wrap').style.display = 'block';
-  const reader = new FileReader();
-  if (f.type.startsWith('image/') || f.name.endsWith('.pdf')) {
-    fileContent = '[上傳檔案：' + f.name + '（二進位格式，請同時在下方貼入文字配方）]';
+
+  const isExcel = f.name.endsWith('.xlsx') || f.name.endsWith('.xls');
+  const isCsv = f.name.endsWith('.csv');
+  const isImage = f.type.startsWith('image/');
+  const isPdf = f.name.endsWith('.pdf');
+
+  if (isExcel) {
+    const reader = new FileReader();
+    reader.onload = e => {
+      try {
+        const wb = XLSX.read(e.target.result, { type: 'array' });
+        let text = '';
+        wb.SheetNames.forEach(name => {
+          const ws = wb.Sheets[name];
+          const csv = XLSX.utils.sheet_to_csv(ws);
+          text += '【工作表：' + name + '】\n' + csv + '\n\n';
+        });
+        fileContent = text.slice(0, 8000);
+        document.getElementById('formula-text').value = '';
+        document.getElementById('formula-text').placeholder = '✓ 已成功讀取 Excel 檔案，內容已自動帶入';
+      } catch(err) {
+        fileContent = '[Excel 讀取失敗，請手動貼入配方]';
+      }
+    };
+    reader.readAsArrayBuffer(f);
+  } else if (isCsv) {
+    const reader = new FileReader();
+    reader.onload = e => { fileContent = e.target.result.slice(0, 8000); };
+    reader.readAsText(f, 'utf-8');
+  } else if (isImage || isPdf) {
+    fileContent = '[上傳檔案：' + f.name + '（圖片/PDF格式，請同時在下方貼入文字配方）]';
   } else {
+    const reader = new FileReader();
     reader.onload = e => { fileContent = e.target.result.slice(0, 6000); };
     reader.readAsText(f, 'utf-8');
   }
