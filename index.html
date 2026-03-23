@@ -363,20 +363,20 @@ textarea { resize: vertical; line-height: 1.6; }
 </head>
 <body>
 
-<!-- Setup overlay -->
+<!-- Worker URL config overlay (shown only if not set) -->
 <div id="setup-overlay">
   <div class="setup-box">
     <div class="setup-title">系統初始設定</div>
-    <div class="setup-sub">請輸入 Anthropic API Key 以啟用 AI 文件產生功能。此 Key 僅儲存在您的瀏覽器中，不會上傳至任何伺服器。</div>
+    <div class="setup-sub">請輸入你的 Cloudflare Worker 網址以啟用 AI 文件產生功能。設定後員工無需任何額外操作。</div>
     <div class="setup-warning">
-      ⚠ 安全提醒：此 Key 儲存於瀏覽器 localStorage，請勿在公用電腦使用。建議定期至 Anthropic Console 輪換 Key。
+      ⚠ 請確認已在 Cloudflare Worker 環境變數中設定 ANTHROPIC_KEY，API Key 不會出現在此頁面。
     </div>
     <div class="form-group">
-      <label>Anthropic API Key</label>
-      <input type="password" id="setup-key" placeholder="sk-ant-api03-..." autocomplete="off">
+      <label>Cloudflare Worker 網址</label>
+      <input type="text" id="setup-key" placeholder="https://gmp-proxy.你的帳號.workers.dev" autocomplete="off">
     </div>
     <button class="btn btn-primary btn-full btn-lg" onclick="saveKey()">確認並進入系統</button>
-    <p style="font-size:11px;color:var(--text-light);text-align:center;margin-top:12px;">取得 API Key：console.anthropic.com</p>
+    <p style="font-size:11px;color:var(--text-light);text-align:center;margin-top:12px;">尚未建立 Worker？請依照設定指南操作</p>
   </div>
 </div>
 
@@ -424,7 +424,7 @@ textarea { resize: vertical; line-height: 1.6; }
   <div class="sidebar-footer">
     <div class="key-status">
       <div class="key-dot" id="key-dot"></div>
-      <span id="key-label" style="font-size:12px;">未設定 API Key</span>
+      <span id="key-label" style="font-size:12px;">未設定 Worker 網址</span>
     </div>
     <button class="nav-item" style="margin-top:6px;" onclick="clearKey()">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
@@ -606,12 +606,12 @@ C相  防腐劑 (Phenoxyethanol)  0.80%"></textarea>
       <div class="card-title">API 設定</div>
       <div class="setting-row">
         <div class="setting-info">
-          <div class="setting-label">Anthropic API Key</div>
-          <div class="setting-desc">用於驅動 AI 文件產生功能。Key 僅儲存在本機瀏覽器，不會傳送至第三方。</div>
+          <div class="setting-label">Cloudflare Worker 網址</div>
+          <div class="setting-desc">API Key 安全儲存於 Cloudflare Worker 環境變數，不會暴露在前端。</div>
         </div>
         <div class="setting-control">
-          <input type="password" id="settings-key" placeholder="sk-ant-api03-..." style="margin-bottom:8px;">
-          <button class="btn btn-primary" onclick="updateKey()" style="font-size:12px;padding:7px 14px;">更新 Key</button>
+          <input type="text" id="settings-key" placeholder="https://gmp-proxy.你的帳號.workers.dev" style="margin-bottom:8px;">
+          <button class="btn btn-primary" onclick="updateKey()" style="font-size:12px;padding:7px 14px;">更新網址</button>
         </div>
       </div>
       <div class="setting-row">
@@ -681,12 +681,12 @@ let uploadedFileName = '';
 let generatedDocs = {};
 
 function init() {
-  const key = localStorage.getItem('gmp_api_key');
-  if (key) {
+  const workerUrl = localStorage.getItem('gmp_worker_url');
+  if (workerUrl) {
     document.getElementById('setup-overlay').style.display = 'none';
     document.getElementById('key-dot').classList.add('active');
-    document.getElementById('key-label').textContent = 'API Key 已設定';
-    document.getElementById('settings-key').value = key;
+    document.getElementById('key-label').textContent = 'Worker 已連線';
+    document.getElementById('settings-key').value = workerUrl;
   }
   renderHistory();
   const today = new Date().toISOString().split('T')[0];
@@ -695,28 +695,28 @@ function init() {
 
 function saveKey() {
   const k = document.getElementById('setup-key').value.trim();
-  if (!k.startsWith('sk-')) { alert('請輸入有效的 API Key（以 sk- 開頭）'); return; }
-  localStorage.setItem('gmp_api_key', k);
+  if (!k.startsWith('https://')) { alert('請輸入有效的 Worker 網址（以 https:// 開頭）'); return; }
+  localStorage.setItem('gmp_worker_url', k);
   document.getElementById('setup-overlay').style.display = 'none';
   document.getElementById('key-dot').classList.add('active');
-  document.getElementById('key-label').textContent = 'API Key 已設定';
+  document.getElementById('key-label').textContent = 'Worker 已連線';
   document.getElementById('settings-key').value = k;
 }
 
 function updateKey() {
   const k = document.getElementById('settings-key').value.trim();
-  if (!k.startsWith('sk-')) { alert('請輸入有效的 API Key（以 sk- 開頭）'); return; }
-  localStorage.setItem('gmp_api_key', k);
+  if (!k.startsWith('https://')) { alert('請輸入有效的 Worker 網址（以 https:// 開頭）'); return; }
+  localStorage.setItem('gmp_worker_url', k);
   document.getElementById('key-dot').classList.add('active');
-  document.getElementById('key-label').textContent = 'API Key 已設定';
-  alert('API Key 已更新');
+  document.getElementById('key-label').textContent = 'Worker 已連線';
+  alert('Worker 網址已更新');
 }
 
 function clearKey() {
-  if (!confirm('確定要清除 API Key？')) return;
-  localStorage.removeItem('gmp_api_key');
+  if (!confirm('確定要清除 Worker 網址？')) return;
+  localStorage.removeItem('gmp_worker_url');
   document.getElementById('key-dot').classList.remove('active');
-  document.getElementById('key-label').textContent = '未設定 API Key';
+  document.getElementById('key-label').textContent = '未設定 Worker 網址';
   document.getElementById('setup-overlay').style.display = 'flex';
 }
 
@@ -782,8 +782,8 @@ function setStatus(msg, type) {
 }
 
 async function generateDocs() {
-  const key = localStorage.getItem('gmp_api_key');
-  if (!key) { alert('請先設定 API Key'); return; }
+  const workerUrl = localStorage.getItem('gmp_worker_url');
+  if (!workerUrl) { alert('請先設定 Cloudflare Worker 網址'); return; }
 
   const selectedDocs = getSelectedDocs();
   if (selectedDocs.length === 0) { alert('請至少選擇一種文件'); return; }
@@ -838,9 +838,9 @@ ${formulaData}
   setStatus('<svg class="spinner" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>&nbsp; AI 分析配方中，請稍候（約 30–60 秒）…', 'loading');
 
   try {
-    const resp = await fetch('https://api.anthropic.com/v1/messages', {
+    const resp = await fetch(workerUrl, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'x-api-key': key, 'anthropic-version': '2023-06-01' },
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         model: MODEL,
         max_tokens: 4000,
