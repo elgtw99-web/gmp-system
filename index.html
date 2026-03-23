@@ -79,7 +79,7 @@ input:focus{border-color:var(--green-mid)}
 </style>
 </head>
 <body>
- 
+
 <div id="setup-ov">
   <div class="setup-box">
     <div class="setup-ttl">系統設定</div>
@@ -96,13 +96,13 @@ input:focus{border-color:var(--green-mid)}
     <button class="btn-prim" onclick="saveSettings()">確認並進入系統</button>
   </div>
 </div>
- 
+
 <button class="gear" onclick="openSet()" title="設定">
   <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
 </button>
- 
+
 <div class="logo">ISO 22716 GMP<span>秤料單產生器</span></div>
- 
+
 <div class="card">
   <div class="drop-zone" id="dz"
     onclick="document.getElementById('fi').click()"
@@ -115,15 +115,15 @@ input:focus{border-color:var(--green-mid)}
       <span class="fmt">Excel</span><span class="fmt">CSV</span><span class="fmt">PDF</span><span class="fmt">圖片</span><span class="fmt">Word</span>
     </div>
   </div>
- 
+
   <div class="file-pill" id="fp">
     <div class="file-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
     <div class="file-meta"><div class="file-nm" id="fn"></div><div class="file-sz" id="fs"></div></div>
     <button class="file-rm" onclick="clrFile()">×</button>
   </div>
- 
+
   <div class="status" id="st"></div>
- 
+
   <button class="btn-gen" id="bg" onclick="generate()" disabled>
     <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     AI 分析配方
@@ -133,7 +133,7 @@ input:focus{border-color:var(--green-mid)}
     <span id="wl">未設定</span>
   </div>
 </div>
- 
+
 <div class="result-wrap" id="rw" style="display:none">
   <div class="result-hdr">
     <div class="result-ttl">AI 分析結果</div>
@@ -152,13 +152,13 @@ input:focus{border-color:var(--green-mid)}
   <div class="tabs" id="tabs"></div>
   <div id="panels"></div>
 </div>
- 
+
 <script>
 const MODEL = 'claude-sonnet-4-20250514';
 const EXCEL_API = 'https://gmp-excel-api.onrender.com';
- 
+
 let uploadedFile=null, fileContent='', fileBase64='', fileType='', generatedDocs={};
- 
+
 function init(){
   const w=localStorage.getItem('gmp_worker');
   const r=localStorage.getItem('gmp_render')||EXCEL_API;
@@ -168,7 +168,7 @@ function init(){
     document.getElementById('wl').textContent=w.replace('https://','');
   }
 }
- 
+
 function saveSettings(){
   const w=document.getElementById('setup-worker').value.trim();
   const r=document.getElementById('setup-render').value.trim()||EXCEL_API;
@@ -179,20 +179,20 @@ function saveSettings(){
   document.getElementById('wd').classList.add('on');
   document.getElementById('wl').textContent=w.replace('https://','');
 }
- 
+
 function openSet(){
   document.getElementById('setup-worker').value=localStorage.getItem('gmp_worker')||'';
   document.getElementById('setup-render').value=localStorage.getItem('gmp_render')||EXCEL_API;
   document.getElementById('setup-ov').style.display='flex';
 }
- 
+
 function ev(e){ e.preventDefault(); document.getElementById('dz').classList.add('over'); }
 function drop(e){
   e.preventDefault();
   document.getElementById('dz').classList.remove('over');
   onFile(e.dataTransfer.files[0]);
 }
- 
+
 function onFile(f){
   if(!f) return;
   uploadedFile=f;
@@ -200,12 +200,12 @@ function onFile(f){
   document.getElementById('fs').textContent=(f.size/1024).toFixed(1)+' KB';
   document.getElementById('fp').style.display='flex';
   document.getElementById('bg').disabled=false;
- 
+
   const isXls=f.name.match(/\.(xlsx|xls)$/i);
   const isCsv=f.name.match(/\.csv$/i);
   const isImg=f.type.startsWith('image/');
   const isPdf=f.name.match(/\.pdf$/i);
- 
+
   if(isXls){
     const r=new FileReader();
     r.onload=e=>{
@@ -231,7 +231,7 @@ function onFile(f){
     r.readAsText(f,'utf-8');
   }
 }
- 
+
 function clrFile(){
   uploadedFile=null; fileContent=''; fileBase64=''; fileType='';
   document.getElementById('fp').style.display='none';
@@ -240,50 +240,55 @@ function clrFile(){
   document.getElementById('rw').style.display='none';
   setSt('');
 }
- 
+
 function setSt(msg,type){
   const el=document.getElementById('st');
   if(!msg){ el.style.display='none'; return; }
   el.className='status '+(type||'loading');
   el.innerHTML=msg;
 }
- 
+
 function setExcelSt(msg,type){
   const el=document.getElementById('excel-st');
   if(!msg){ el.style.display='none'; return; }
   el.className='excel-status '+(type||'loading');
   el.innerHTML=msg;
 }
- 
+
 async function generate(){
   const workerUrl=localStorage.getItem('gmp_worker');
   if(!workerUrl){ openSet(); return; }
   if(!uploadedFile){ alert('請先上傳配方檔案'); return; }
- 
+
   const btn=document.getElementById('bg');
   btn.disabled=true;
   btn.innerHTML='<svg class="spin" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> AI 分析中…';
   setSt('<svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>&nbsp;AI 分析配方中，約 30–60 秒…','loading');
- 
+
   const sys=`你是 ISO 22716 化妝品 GMP 文件專家。請從配方資料中精確提取所有資訊，以繁體中文輸出。
- 
+
 請產生以下文件，每份以「=== 文件名稱 ===」開頭：
- 
+
 1. 配方規格書
-格式（表格，| 分隔）：
-相別 | INCI名稱 | 原料中文名稱 | 單位含量(%) | 功能
- 
-重要：
-- 單位含量必須是數字（如 0.002 或 75.5），不要加 %
-- 相別只在第一個原料填入（如 A、B、C、D）
-- 水的含量若未明確給出，請用 =1-其他原料總和 表示
- 
+【重要】表格必須嚴格遵守以下格式，每列用 | 分隔，不要遺漏任何原料：
+
+| 相別 | INCI名稱 | 原料中文名稱 | 單位含量 | 功能 |
+|------|---------|------------|---------|------|
+| A | Aqua | 水 | 75.5 | 溶劑 |
+| A | Glycerin | 甘油 | 5.0 | 保濕劑 |
+| B | Cetyl Alcohol | 鯨蠟醇 | 2.0 | 乳化劑 |
+
+規則：
+- 相別只在每相第一列填入（A、B、C），之後該相其他列留空
+- 單位含量填純數字（如 75.5），不要加 %
+- 所有原料都必須列出，一列都不能少
+
 2. 品管檢驗記錄表
-含：外觀、顏色、氣味、pH值範圍、黏度、微生物限量（TPC、酵母菌、大腸桿菌）、放行簽核欄
- 
+含：外觀、顏色、氣味、pH值範圍、黏度、微生物限量、放行欄位
+
 3. 批次製造記錄 BMR
-含：製程步驟、溫度參數、攪拌速度、設備、秤量記錄欄位`;
- 
+含：製程步驟（依 A→B→C 相序）、溫度、攪拌速度、設備`;
+
   let messages;
   if((fileType==='image'||fileType==='pdf')&&fileBase64){
     const mt=fileType==='pdf'?'application/pdf':(uploadedFile.type||'image/jpeg');
@@ -294,7 +299,7 @@ async function generate(){
   } else {
     messages=[{role:'user',content:'配方資料：\n\n'+(fileContent||'（檔案：'+uploadedFile.name+'）')+'\n\n請產生完整 GMP 文件。'}];
   }
- 
+
   try{
     const resp=await fetch(workerUrl,{
       method:'POST',
@@ -314,7 +319,7 @@ async function generate(){
     btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg> AI 分析配方';
   }
 }
- 
+
 function parseDocs(text){
   const r={};
   const hdrs=[...text.matchAll(/={3,}([^=]+)={3,}/g)].map(m=>m[1].trim());
@@ -323,7 +328,7 @@ function parseDocs(text){
   else r['完整文件']=text;
   return r;
 }
- 
+
 function renderResult(docs){
   const tabs=document.getElementById('tabs');
   const panels=document.getElementById('panels');
@@ -347,7 +352,7 @@ function renderResult(docs){
   document.getElementById('rw').style.display='block';
   document.getElementById('rw').scrollIntoView({behavior:'smooth',block:'start'});
 }
- 
+
 function dlTxt(){
   const all=Object.entries(generatedDocs).map(([k,v])=>'=== '+k+' ===\n\n'+v).join('\n\n\n');
   const nm=(uploadedFile?.name.replace(/\.[^.]+$/,'')||'GMP')+'_'+new Date().toISOString().split('T')[0]+'.txt';
@@ -355,24 +360,70 @@ function dlTxt(){
   a.href=URL.createObjectURL(new Blob([all],{type:'text/plain;charset=utf-8'}));
   a.download=nm; a.click();
 }
- 
+
 function parseIngredients(text){
   const rows=[]; let lastPh='A';
-  for(const line of text.split('\n')){
-    if(!line.startsWith('|')) continue;
+  const lines=text.split('\n');
+
+  // 方法1：表格格式 | 相別 | INCI | 名稱 | 含量 |
+  let tableFound=false;
+  for(const line of lines){
+    if(!line.includes('|')) continue;
     const cells=line.split('|').map(c=>c.trim()).filter(c=>c);
-    if(!cells.length||cells[0]==='相別'||cells[0].startsWith('-')) continue;
-    const ph=cells[0].match(/^[A-Z]$/)?cells[0]:lastPh;
-    if(cells[0].match(/^[A-Z]$/)) lastPh=ph;
-    const inci=cells[1]||'';
-    const name=cells[2]||inci;
-    const pct=parseFloat((cells[3]||'').replace('%',''))||0;
-    const func=cells[4]||'';
-    if(inci&&pct>0) rows.push({phase:ph,inci,name,percentage:pct,func});
+    if(!cells.length) continue;
+    // 跳過表頭和分隔線
+    if(cells[0]==='相別'||cells[0].startsWith('-')||cells[0].startsWith('=')) continue;
+    // 相別欄：A/B/C/D 或空（繼承上一個）
+    const ph=cells[0].match(/^[A-Za-z]$/)? cells[0].toUpperCase():lastPh;
+    if(cells[0].match(/^[A-Za-z]$/)) lastPh=ph;
+    // 找含量：任一欄有數字且 <100 的
+    let inci='', name='', pct=0;
+    for(let i=0;i<cells.length;i++){
+      const n=parseFloat(cells[i].replace('%',''));
+      if(!isNaN(n)&&n>0&&n<=100&&!pct){
+        pct=n;
+        // INCI 在含量前的欄位
+        inci=cells[i-1]||'';
+        name=cells[i-2]||inci;
+      }
+    }
+    // 若無法找到含量，嘗試第2、3、4欄
+    if(!pct&&cells.length>=3){
+      inci=cells[1]||''; name=cells[2]||inci;
+      pct=parseFloat((cells[3]||cells[2]||'').replace('%',''))||0;
+    }
+    if(inci&&pct>0){
+      rows.push({phase:ph,inci:inci.trim(),name:(name||inci).trim(),percentage:pct});
+      tableFound=true;
+    }
+  }
+  if(tableFound&&rows.length>0) return rows;
+
+  // 方法2：非表格格式，逐行掃描
+  // 例：「Water / Aqua / 70%」或「A 水 Water 70.00%」
+  lastPh='A';
+  for(const line of lines){
+    if(!line.trim()||line.startsWith('===')||line.startsWith('#')) continue;
+    // 判斷相別
+    const phMatch=line.match(/^[（(]?([A-D])[相項）)]/);
+    if(phMatch){ lastPh=phMatch[1]; continue; }
+    // 找百分比數字
+    const pctMatch=line.match(/(\d+\.?\d*)\s*%/);
+    if(!pctMatch) continue;
+    const pct=parseFloat(pctMatch[1]);
+    if(pct<=0||pct>100) continue;
+    // 找原料名稱（去掉數字和%和常見分隔符）
+    const clean=line.replace(/\d+\.?\d*\s*%/,'').replace(/[|,，。；;]/g,' ').trim();
+    const parts=clean.split(/\s{2,}|\//).map(p=>p.trim()).filter(p=>p&&p.length>1);
+    const inci=parts[1]||parts[0]||'';
+    const name=parts[0]||inci;
+    if(inci&&pct>0){
+      rows.push({phase:lastPh,inci:inci.trim(),name:(name||inci).trim(),percentage:pct});
+    }
   }
   return rows;
 }
- 
+
 function parseProcessSteps(text){
   const steps=[];
   for(const line of text.split('\n')){
@@ -384,7 +435,7 @@ function parseProcessSteps(text){
   }
   return steps.slice(0,6);
 }
- 
+
 async function dlExcel(){
   const renderUrl=localStorage.getItem('gmp_render')||EXCEL_API;
   const formulaTxt=generatedDocs['配方規格書']||Object.values(generatedDocs)[0]||'';
@@ -393,17 +444,19 @@ async function dlExcel(){
   const steps=parseProcessSteps(bmrTxt||formulaTxt);
   const prodName=uploadedFile?.name.replace(/\.[^.]+$/,'')||'新產品';
   const today=new Date().toISOString().split('T')[0];
- 
+
   if(!ings.length){
-    setExcelSt('✗ 無法從分析結果中找到原料資料，請確認 AI 已正確分析配方','err');
+    setExcelSt('✗ 無法解析原料資料（0 筆）。請確認 AI 分析結果中有「配方規格書」表格，或重新分析一次。','err');
     return;
   }
- 
+
+  setExcelSt(`已解析到 ${ings.length} 種原料，正在產生 Excel…`,'loading');
+
   const btn=document.getElementById('btn-excel');
   btn.disabled=true;
   btn.innerHTML='<svg class="spin" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> 產生中…';
   setExcelSt('<svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>&nbsp;Render API 產生 Excel 中（首次可能需要 60 秒）…','loading');
- 
+
   try{
     const payload={
       product_name: prodName,
@@ -418,18 +471,18 @@ async function dlExcel(){
       })),
       process_steps: steps
     };
- 
+
     const resp=await fetch(renderUrl+'/generate-excel',{
       method:'POST',
       headers:{'Content-Type':'application/json'},
       body:JSON.stringify(payload)
     });
- 
+
     if(!resp.ok){
       const err=await resp.json().catch(()=>({error:'未知錯誤'}));
       throw new Error(err.error||'Render API 失敗');
     }
- 
+
     const blob=await resp.blob();
     const url=URL.createObjectURL(blob);
     const a=document.createElement('a');
@@ -445,9 +498,8 @@ async function dlExcel(){
     btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 下載秤料單 Excel';
   }
 }
- 
+
 init();
 </script>
 </body>
 </html>
- 
