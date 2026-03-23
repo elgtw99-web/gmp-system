@@ -16,201 +16,134 @@
   --mono:'DM Mono',monospace;--serif:'Noto Serif TC',serif;--sans:'Instrument Sans',sans-serif;
   --r:8px;--rl:14px;
 }
-body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:2rem 1rem}
-
-.logo{font-family:var(--serif);font-size:13px;color:var(--light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.5rem;text-align:center}
-.logo span{display:block;font-size:24px;color:var(--text);letter-spacing:0;margin-top:4px}
-
-.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--rl);padding:2rem;width:100%;max-width:640px;margin-bottom:1rem}
-
-/* Drop zone */
-.drop-zone{
-  border:2px dashed var(--border-dark);border-radius:var(--rl);
-  padding:3rem 2rem;text-align:center;cursor:pointer;
-  transition:all 0.2s;background:var(--bg);position:relative;
-}
-.drop-zone:hover,.drop-zone.dragover{border-color:var(--green-mid);background:var(--green-light)}
+body{font-family:var(--sans);background:var(--bg);color:var(--text);min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2.5rem 1rem}
+.logo{font-family:var(--serif);font-size:12px;color:var(--light);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.4rem;text-align:center}
+.logo span{display:block;font-size:26px;color:var(--text);letter-spacing:0;margin-top:4px;font-weight:600}
+.card{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--rl);padding:2rem;width:100%;max-width:600px;margin-bottom:1rem}
+.drop-zone{border:2px dashed var(--border-dark);border-radius:var(--rl);padding:3rem 2rem;text-align:center;cursor:pointer;transition:all 0.2s;background:var(--bg)}
+.drop-zone:hover,.drop-zone.over{border-color:var(--green-mid);background:var(--green-light)}
 .drop-zone input{display:none}
-.drop-icon{width:48px;height:48px;margin:0 auto 1rem;color:var(--light)}
-.drop-title{font-size:16px;font-weight:500;margin-bottom:6px}
-.drop-sub{font-size:13px;color:var(--muted)}
-.drop-formats{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px}
-.fmt-tag{background:var(--bg);border:0.5px solid var(--border);border-radius:4px;padding:3px 10px;font-size:11px;color:var(--muted);font-family:var(--mono)}
-
-/* File preview */
-.file-preview{display:none;align-items:center;gap:12px;padding:12px 16px;background:var(--green-light);border:0.5px solid var(--green-mid);border-radius:var(--r);margin-top:12px}
-.file-icon{width:36px;height:36px;border-radius:8px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.file-info{flex:1}
-.file-name{font-size:13px;font-weight:500;color:var(--green)}
-.file-size{font-size:11px;color:var(--green-mid);margin-top:2px}
-.file-remove{background:none;border:none;cursor:pointer;color:var(--green-mid);font-size:18px;padding:0;line-height:1}
-
-/* Status */
-.status{display:none;padding:12px 16px;border-radius:var(--r);font-size:13px;margin-top:12px;align-items:center;gap:10px}
+.drop-icon{width:44px;height:44px;margin:0 auto 1rem;color:var(--light)}
+.drop-title{font-size:15px;font-weight:500;margin-bottom:5px}
+.drop-sub{font-size:12px;color:var(--muted)}
+.fmt-row{display:flex;gap:5px;justify-content:center;flex-wrap:wrap;margin-top:10px}
+.fmt{background:var(--bg);border:0.5px solid var(--border);border-radius:4px;padding:2px 9px;font-size:11px;color:var(--muted);font-family:var(--mono)}
+.file-pill{display:none;align-items:center;gap:10px;padding:10px 14px;background:var(--green-light);border:0.5px solid var(--green-mid);border-radius:var(--r);margin-top:10px}
+.file-icon{width:32px;height:32px;border-radius:6px;background:var(--green);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.file-meta{flex:1}
+.file-nm{font-size:13px;font-weight:500;color:var(--green)}
+.file-sz{font-size:11px;color:var(--green-mid);margin-top:1px}
+.file-rm{background:none;border:none;cursor:pointer;color:var(--green-mid);font-size:18px;line-height:1;padding:0}
+.status{display:none;padding:11px 14px;border-radius:var(--r);font-size:13px;margin-top:10px;align-items:center;gap:9px}
 .status.loading{background:#F0EFEC;color:var(--muted);border:0.5px solid var(--border);display:flex}
-.status.success{background:var(--green-light);color:var(--green);border:0.5px solid var(--green-mid);display:flex}
-.status.error{background:var(--warn-light);color:var(--warn);border:0.5px solid #F5C09A;display:flex}
+.status.ok{background:var(--green-light);color:var(--green);border:0.5px solid var(--green-mid);display:flex}
+.status.err{background:var(--warn-light);color:var(--warn);border:0.5px solid #F5C09A;display:flex}
 @keyframes spin{to{transform:rotate(360deg)}}
-.spinner{animation:spin 0.8s linear infinite;flex-shrink:0}
-
-/* Generate button */
-.btn-generate{
-  width:100%;padding:14px;border-radius:var(--r);border:none;
-  background:var(--green);color:#fff;font-family:var(--sans);
-  font-size:15px;font-weight:500;cursor:pointer;
-  display:flex;align-items:center;justify-content:center;gap:10px;
-  transition:background 0.15s;margin-top:1rem;
-}
-.btn-generate:hover{background:#3D6B1F}
-.btn-generate:disabled{opacity:0.5;cursor:not-allowed}
-
-/* Result area */
-.result-area{display:none;width:100%;max-width:640px}
-.result-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-.result-title{font-family:var(--serif);font-size:16px;font-weight:600}
-.btn-download{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:10px 20px;border-radius:var(--r);
-  background:#1D6F42;color:#fff;border:none;
-  font-family:var(--sans);font-size:13px;font-weight:500;
-  cursor:pointer;transition:background 0.15s;
-}
-.btn-download:hover{background:#155d35}
-.btn-download-txt{
-  display:inline-flex;align-items:center;gap:8px;
-  padding:10px 20px;border-radius:var(--r);
-  background:transparent;color:var(--text);
-  border:0.5px solid var(--border);
-  font-family:var(--sans);font-size:13px;
-  cursor:pointer;transition:background 0.15s;
-}
-.btn-download-txt:hover{background:var(--bg)}
-
-.preview-box{
-  background:var(--surface);border:0.5px solid var(--border);
-  border-radius:var(--rl);padding:1.5rem;
-  font-size:12px;font-family:var(--mono);color:var(--text);
-  white-space:pre-wrap;line-height:1.8;max-height:400px;overflow-y:auto;
-}
-.doc-tabs{display:flex;gap:4px;margin-bottom:8px}
-.doc-tab{padding:5px 14px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all 0.15s}
-.doc-tab.active{background:var(--text);color:var(--bg);border-color:var(--text)}
-.doc-panel{display:none}
-.doc-panel.active{display:block}
-
-/* Setup overlay */
-#setup-overlay{position:fixed;inset:0;background:rgba(26,24,20,0.85);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px)}
-.setup-box{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--rl);padding:2.5rem;width:460px;max-width:90vw}
-.setup-title{font-family:var(--serif);font-size:22px;font-weight:600;margin-bottom:6px}
-.setup-sub{font-size:13px;color:var(--muted);margin-bottom:1.5rem;line-height:1.6}
-.setup-warn{background:var(--warn-light);border:0.5px solid #F5C09A;border-radius:var(--r);padding:10px 14px;font-size:12px;color:var(--warn);margin-bottom:1.25rem;line-height:1.5}
-label{font-size:12px;color:var(--muted);display:block;margin-bottom:5px}
-input[type=text],input[type=password]{width:100%;padding:9px 12px;border:0.5px solid var(--border);border-radius:var(--r);font-family:var(--sans);font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color 0.15s}
-input:focus{border-color:var(--green-mid)}
-.btn-primary{width:100%;padding:11px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;margin-top:1rem}
-
-/* Settings gear */
-.gear-btn{position:fixed;top:1.5rem;right:1.5rem;width:36px;height:36px;border-radius:50%;background:var(--surface);border:0.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.15s}
-.gear-btn:hover{background:var(--bg);color:var(--text)}
-
-.worker-status{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:8px}
-.dot{width:6px;height:6px;border-radius:50%;background:#ccc}
+.spin{animation:spin 0.8s linear infinite;flex-shrink:0}
+.btn-gen{width:100%;padding:13px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:9px;transition:background 0.15s;margin-top:1rem}
+.btn-gen:hover{background:#3D6B1F}
+.btn-gen:disabled{opacity:0.45;cursor:not-allowed}
+.worker-row{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);margin-top:7px}
+.dot{width:6px;height:6px;border-radius:50%;background:#ccc;flex-shrink:0}
 .dot.on{background:#6DB33F}
+.result-wrap{width:100%;max-width:600px}
+.result-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.result-ttl{font-family:var(--serif);font-size:15px;font-weight:600}
+.btn-dl{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--r);background:#1D6F42;color:#fff;border:none;font-family:var(--sans);font-size:13px;font-weight:500;cursor:pointer;transition:background 0.15s}
+.btn-dl:hover{background:#155d35}
+.btn-dl-txt{display:inline-flex;align-items:center;gap:7px;padding:9px 18px;border-radius:var(--r);background:transparent;color:var(--text);border:0.5px solid var(--border);font-family:var(--sans);font-size:13px;cursor:pointer;transition:background 0.15s}
+.btn-dl-txt:hover{background:var(--bg)}
+.tabs{display:flex;gap:4px;margin-bottom:8px}
+.tab{padding:5px 13px;border-radius:var(--r);font-size:12px;font-weight:500;cursor:pointer;border:0.5px solid var(--border);background:var(--surface);color:var(--muted);transition:all 0.15s}
+.tab.on{background:var(--text);color:var(--bg);border-color:var(--text)}
+.panel{display:none;background:var(--surface);border:0.5px solid var(--border);border-radius:var(--rl);padding:1.25rem;font-size:12px;font-family:var(--mono);white-space:pre-wrap;line-height:1.8;max-height:380px;overflow-y:auto;color:var(--text)}
+.panel.on{display:block}
+#setup-ov{position:fixed;inset:0;background:rgba(26,24,20,0.85);display:flex;align-items:center;justify-content:center;z-index:100;backdrop-filter:blur(4px)}
+.setup-box{background:var(--surface);border:0.5px solid var(--border);border-radius:var(--rl);padding:2.5rem;width:460px;max-width:90vw}
+.setup-ttl{font-family:var(--serif);font-size:21px;font-weight:600;margin-bottom:5px}
+.setup-sub{font-size:13px;color:var(--muted);margin-bottom:1.25rem;line-height:1.6}
+.setup-warn{background:var(--warn-light);border:0.5px solid #F5C09A;border-radius:var(--r);padding:9px 13px;font-size:12px;color:var(--warn);margin-bottom:1.1rem;line-height:1.5}
+label{font-size:12px;color:var(--muted);display:block;margin-bottom:4px}
+input[type=text],input[type=password]{width:100%;padding:9px 11px;border:0.5px solid var(--border);border-radius:var(--r);font-family:var(--sans);font-size:13px;color:var(--text);background:var(--surface);outline:none;transition:border-color 0.15s}
+input:focus{border-color:var(--green-mid)}
+.btn-prim{width:100%;padding:11px;border-radius:var(--r);border:none;background:var(--green);color:#fff;font-family:var(--sans);font-size:14px;font-weight:500;cursor:pointer;margin-top:.9rem}
+.gear{position:fixed;top:1.25rem;right:1.25rem;width:34px;height:34px;border-radius:50%;background:var(--surface);border:0.5px solid var(--border);cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.15s}
+.gear:hover{background:var(--bg);color:var(--text)}
 </style>
 </head>
 <body>
 
-<div id="setup-overlay">
+<div id="setup-ov">
   <div class="setup-box">
-    <div class="setup-title">初次設定</div>
-    <div class="setup-sub">請輸入 Cloudflare Worker 網址，AI 文件產生功能才能運作。設定後員工無需任何額外操作。</div>
-    <div class="setup-warn">⚠ API Key 安全儲存於 Cloudflare Worker，不會出現在此頁面。</div>
-    <div style="margin-bottom:12px">
-      <label>Cloudflare Worker 網址</label>
+    <div class="setup-ttl">初次設定</div>
+    <div class="setup-sub">請輸入 Cloudflare Worker 網址以啟用 AI 功能。</div>
+    <div class="setup-warn">⚠ API Key 安全儲存於 Cloudflare，不會出現在此頁面。</div>
+    <div style="margin-bottom:10px">
+      <label>Worker 網址</label>
       <input type="text" id="setup-url" placeholder="https://gmp-proxy.你的帳號.workers.dev">
     </div>
-    <button class="btn-primary" onclick="saveWorkerUrl()">確認並進入系統</button>
-    <p style="font-size:11px;color:var(--light);text-align:center;margin-top:10px">已設定過？請直接關閉此視窗</p>
+    <button class="btn-prim" onclick="saveUrl()">確認並進入</button>
   </div>
 </div>
 
-<button class="gear-btn" onclick="openSettings()" title="設定">
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+<button class="gear" onclick="openSet()" title="設定">
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
 </button>
 
-<div class="logo">
-  ISO 22716 GMP
-  <span>秤料單產生器</span>
-</div>
+<div class="logo">ISO 22716 GMP<span>秤料單產生器</span></div>
 
 <div class="card">
-  <div class="drop-zone" id="drop-zone"
-    onclick="document.getElementById('file-input').click()"
-    ondragover="event.preventDefault();this.classList.add('dragover')"
-    ondragleave="this.classList.remove('dragover')"
-    ondrop="handleDrop(event)">
-    <input type="file" id="file-input" accept=".xlsx,.xls,.csv,.pdf,.jpg,.jpeg,.png,.docx,.doc" onchange="handleFile(this.files[0])">
+  <div class="drop-zone" id="dz"
+    onclick="document.getElementById('fi').click()"
+    ondragover="ev(event)" ondragleave="this.classList.remove('over')" ondrop="drop(event)">
+    <input type="file" id="fi" accept=".xlsx,.xls,.csv,.pdf,.jpg,.jpeg,.png,.docx,.doc" onchange="onFile(this.files[0])">
     <svg class="drop-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
     <div class="drop-title">上傳配方檔案</div>
-    <div class="drop-sub">點擊或拖曳檔案到這裡</div>
-    <div class="drop-formats">
-      <span class="fmt-tag">Excel</span>
-      <span class="fmt-tag">CSV</span>
-      <span class="fmt-tag">PDF</span>
-      <span class="fmt-tag">圖片</span>
-      <span class="fmt-tag">Word</span>
+    <div class="drop-sub">點擊或拖曳到這裡</div>
+    <div class="fmt-row">
+      <span class="fmt">Excel</span><span class="fmt">CSV</span><span class="fmt">PDF</span><span class="fmt">圖片</span><span class="fmt">Word</span>
     </div>
   </div>
 
-  <div class="file-preview" id="file-preview">
-    <div class="file-icon">
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-    </div>
-    <div class="file-info">
-      <div class="file-name" id="file-name-text"></div>
-      <div class="file-size" id="file-size-text"></div>
-    </div>
-    <button class="file-remove" onclick="clearFile()">×</button>
+  <div class="file-pill" id="fp">
+    <div class="file-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+    <div class="file-meta"><div class="file-nm" id="fn"></div><div class="file-sz" id="fs"></div></div>
+    <button class="file-rm" onclick="clrFile()">×</button>
   </div>
 
-  <div class="status" id="status-msg"></div>
+  <div class="status" id="st"></div>
 
-  <button class="btn-generate" id="btn-generate" onclick="generate()" disabled>
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+  <button class="btn-gen" id="bg" onclick="generate()" disabled>
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     產生秤料單
   </button>
-
-  <div class="worker-status">
-    <div class="dot" id="worker-dot"></div>
-    <span id="worker-label">未設定 Worker</span>
-  </div>
+  <div class="worker-row"><div class="dot" id="wd"></div><span id="wl">未設定 Worker</span></div>
 </div>
 
-<div class="result-area" id="result-area">
-  <div class="result-header">
-    <div class="result-title">產生結果</div>
+<div class="result-wrap" id="rw" style="display:none">
+  <div class="result-hdr">
+    <div class="result-ttl">產生結果</div>
     <div style="display:flex;gap:8px">
-      <button class="btn-download-txt" onclick="downloadTxt()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <button class="btn-dl-txt" onclick="dlTxt()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         下載 .txt
       </button>
-      <button class="btn-download" onclick="downloadExcel()">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      <button class="btn-dl" onclick="dlExcel()">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
         下載秤料單 Excel
       </button>
     </div>
   </div>
-  <div class="doc-tabs" id="doc-tabs"></div>
-  <div id="doc-panels"></div>
+  <div class="tabs" id="tabs"></div>
+  <div id="panels"></div>
 </div>
 
 <script>
 const MODEL = 'claude-sonnet-4-20250514';
-let uploadedFile = null;
-let fileContent = '';
-let fileBase64 = '';
-let fileType = '';
-let generatedDocs = {};
+// 模板路徑（同一 GitHub repo 內）
+const TEMPLATE_URL = './配方表_空白_.xlsx';
+
+let uploadedFile=null, fileContent='', fileBase64='', fileType='', generatedDocs={}, templateBytes=null;
 
 const SUPPLIER_DB = {
   'XANTHAN GUM':{inci:'Xanthan Gum',item:'Xanthan Gum(三仙膠)',company:'嘉誠化學股份有限公司',supplierCode:'HC24',productCode:'HC24FI001'},
@@ -347,281 +280,345 @@ const SUPPLIER_DB = {
   'WATER&PROPANEDIOL&BENZYL GLYCOL&HYDROLYZED GLYCOSAMINOGLYCANS&GLYCERIN&SODIUM HYALURONATE&ETHYLHEXYLGLYCERIN&SODIUM HYALURONATE CROSSPOLYMER&1,2-HEXANEDIOL&HYDROLYZED HYALURONIC ACID&HYDROXYPROPYLTRIMONIUM HYALURONATE&HYALURONIC ACID&SODIUM ACETYLATED HYALURONATE':{inci:'Water&Propanediol&Benzyl Glycol&Hydrolyzed Glycosaminoglycans&Glycerin&Sodium Hyaluronate&Ethylhexylglycerin&Sodium Hyaluronate Crosspolymer&1,2-Hexanediol&Hydrolyzed Hyaluronic Acid&Hydroxypropyltrimonium Hyaluronate&Hyaluronic Acid&Sodium Acetylated Hyaluronate',item:'8D透明質酸',company:'中國广州辰裕生物科技有限公司',supplierCode:'CY25',productCode:'CY25AI086'},
   'WATER&BUTYLENE GLYCOL&GLYCOLIC ACID&PEG-60 HYDROGENATED CASTOR OIL&ETHYLHEXYLGLYCERIN &GLYCERYL CAPRYLATE&LACTOBACILLUS/PEAR JUICE FERMENT FILTRATE&O-CYMEN-5-OL&PHELLODENDRON AMURENSE BARK EXTRACT&SALIX ALBA (WILLOW) BARK EXTRACT&REHMANNIA CHINENSIS ROOT EXTRACT&MELIA AZADIRACHTA LEAF EXTRACT&SCUTELLARIA BAICALENSIS ROOT EXTRACT&HOUTTUYNIA CORDATA EXTRACT&GLYCINE SOJA (SOYBEAN) SEED EXTRACT':{inci:'Water&Butylene Glycol&Glycolic Acid&PEG-60 Hydrogenated Castor Oil&Ethylhexylglycerin &Glyceryl Caprylate&Lactobacillus/Pear Juice Ferment Filtrate&O-CYMEN-5-OL&Phellodendron Amurense Bark Extract&Salix Alba (Willow) Bark Extract&Rehmannia Chinensis Root Extract&Melia Azadirachta Leaf Extract&Scutellaria Baicalensis Root Extract&Houttuynia Cordata Extract&Glycine Soja (Soybean) Seed Extract',item:'痤瘡剋星',company:'中國广州辰裕生物科技有限公司',supplierCode:'CY25',productCode:'CY25AI087'}
 };
-function lookupSupplier(inci) {
-  if (!inci) return {};
-  const key = inci.trim().toUpperCase();
-  if (SUPPLIER_DB[key]) return SUPPLIER_DB[key];
-  for (const [k, v] of Object.entries(SUPPLIER_DB)) {
-    if (key.includes(k) || k.includes(key)) return v;
+function supLookup(inci){
+  if(!inci) return {};
+  const k=inci.trim().toUpperCase();
+  if(SUPPLIER_DB[k]) return SUPPLIER_DB[k];
+  for(const [dk,dv] of Object.entries(SUPPLIER_DB)){
+    if(k.includes(dk)||dk.includes(k)) return dv;
   }
   return {};
 }
 
-function init() {
-  const url = localStorage.getItem('gmp_worker_url');
-  if (url) {
-    document.getElementById('setup-overlay').style.display = 'none';
-    document.getElementById('worker-dot').classList.add('on');
-    document.getElementById('worker-label').textContent = url.replace('https://','');
+// 預先載入模板
+async function loadTemplate(){
+  try{
+    const r=await fetch(TEMPLATE_URL);
+    const buf=await r.arrayBuffer();
+    templateBytes=new Uint8Array(buf);
+    console.log('模板已載入，大小：'+templateBytes.length);
+  } catch(e){ console.warn('模板載入失敗：',e); }
+}
+
+function init(){
+  const url=localStorage.getItem('gmp_worker');
+  if(url){
+    document.getElementById('setup-ov').style.display='none';
+    document.getElementById('wd').classList.add('on');
+    document.getElementById('wl').textContent=url.replace('https://','');
   }
+  loadTemplate();
 }
 
-function saveWorkerUrl() {
-  const url = document.getElementById('setup-url').value.trim();
-  if (!url.startsWith('https://')) { alert('請輸入有效網址（以 https:// 開頭）'); return; }
-  localStorage.setItem('gmp_worker_url', url);
-  document.getElementById('setup-overlay').style.display = 'none';
-  document.getElementById('worker-dot').classList.add('on');
-  document.getElementById('worker-label').textContent = url.replace('https://','');
+function saveUrl(){
+  const u=document.getElementById('setup-url').value.trim();
+  if(!u.startsWith('https://')){ alert('請輸入有效網址'); return; }
+  localStorage.setItem('gmp_worker',u);
+  document.getElementById('setup-ov').style.display='none';
+  document.getElementById('wd').classList.add('on');
+  document.getElementById('wl').textContent=u.replace('https://','');
+}
+function openSet(){
+  document.getElementById('setup-url').value=localStorage.getItem('gmp_worker')||'';
+  document.getElementById('setup-ov').style.display='flex';
 }
 
-function openSettings() {
-  const url = localStorage.getItem('gmp_worker_url') || '';
-  document.getElementById('setup-url').value = url;
-  document.getElementById('setup-overlay').style.display = 'flex';
-}
-
-function handleDrop(e) {
+function ev(e){ e.preventDefault(); document.getElementById('dz').classList.add('over'); }
+function drop(e){
   e.preventDefault();
-  document.getElementById('drop-zone').classList.remove('dragover');
-  handleFile(e.dataTransfer.files[0]);
+  document.getElementById('dz').classList.remove('over');
+  onFile(e.dataTransfer.files[0]);
 }
 
-function handleFile(f) {
-  if (!f) return;
-  uploadedFile = f;
-  document.getElementById('file-name-text').textContent = f.name;
-  document.getElementById('file-size-text').textContent = (f.size/1024).toFixed(1) + ' KB';
-  document.getElementById('file-preview').style.display = 'flex';
-  document.getElementById('btn-generate').disabled = false;
+function onFile(f){
+  if(!f) return;
+  uploadedFile=f;
+  document.getElementById('fn').textContent=f.name;
+  document.getElementById('fs').textContent=(f.size/1024).toFixed(1)+' KB';
+  document.getElementById('fp').style.display='flex';
+  document.getElementById('bg').disabled=false;
 
-  const isExcel = f.name.match(/\.(xlsx|xls)$/i);
-  const isCsv = f.name.match(/\.csv$/i);
-  const isImage = f.type.startsWith('image/');
-  const isPdf = f.name.match(/\.pdf$/i);
-  const isWord = f.name.match(/\.(docx|doc)$/i);
+  const isXls=f.name.match(/\.(xlsx|xls)$/i);
+  const isCsv=f.name.match(/\.csv$/i);
+  const isImg=f.type.startsWith('image/');
+  const isPdf=f.name.match(/\.pdf$/i);
 
-  if (isExcel) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      try {
-        const wb = XLSX.read(e.target.result, { type: 'array' });
-        let text = '';
-        wb.SheetNames.forEach(name => {
-          text += '【工作表：' + name + '】\n' + XLSX.utils.sheet_to_csv(wb.Sheets[name]) + '\n\n';
-        });
-        fileContent = text.slice(0, 8000);
-        fileType = 'excel';
-      } catch(err) { fileContent = ''; }
+  if(isXls){
+    const r=new FileReader();
+    r.onload=e=>{
+      try{
+        const wb=XLSX.read(e.target.result,{type:'array'});
+        let t='';
+        wb.SheetNames.forEach(n=>{ t+='【'+n+'】\n'+XLSX.utils.sheet_to_csv(wb.Sheets[n])+'\n\n'; });
+        fileContent=t.slice(0,8000); fileType='excel';
+      } catch(err){ fileContent=''; }
     };
-    reader.readAsArrayBuffer(f);
-  } else if (isCsv) {
-    const reader = new FileReader();
-    reader.onload = e => { fileContent = e.target.result.slice(0, 8000); fileType = 'csv'; };
-    reader.readAsText(f, 'utf-8');
-  } else if (isImage || isPdf) {
-    const reader = new FileReader();
-    reader.onload = e => {
-      fileBase64 = e.target.result.split(',')[1];
-      fileType = isImage ? 'image' : 'pdf';
-      fileContent = '';
-    };
-    reader.readAsDataURL(f);
-  } else if (isWord) {
-    fileContent = '[Word檔：' + f.name + '，請AI根據檔名和常見配方格式進行解析]';
-    fileType = 'word';
+    r.readAsArrayBuffer(f);
+  } else if(isCsv){
+    const r=new FileReader();
+    r.onload=e=>{ fileContent=e.target.result.slice(0,8000); fileType='csv'; };
+    r.readAsText(f,'utf-8');
+  } else if(isImg||isPdf){
+    const r=new FileReader();
+    r.onload=e=>{ fileBase64=e.target.result.split(',')[1]; fileType=isImg?'image':'pdf'; fileContent=''; };
+    r.readAsDataURL(f);
   } else {
-    const reader = new FileReader();
-    reader.onload = e => { fileContent = e.target.result.slice(0, 6000); fileType = 'text'; };
-    reader.readAsText(f, 'utf-8');
+    const r=new FileReader();
+    r.onload=e=>{ fileContent=e.target.result.slice(0,6000); fileType='text'; };
+    r.readAsText(f,'utf-8');
   }
 }
 
-function clearFile() {
-  uploadedFile = null; fileContent = ''; fileBase64 = ''; fileType = '';
-  document.getElementById('file-preview').style.display = 'none';
-  document.getElementById('btn-generate').disabled = true;
-  document.getElementById('file-input').value = '';
-  document.getElementById('result-area').style.display = 'none';
-  setStatus('');
+function clrFile(){
+  uploadedFile=null; fileContent=''; fileBase64=''; fileType='';
+  document.getElementById('fp').style.display='none';
+  document.getElementById('bg').disabled=true;
+  document.getElementById('fi').value='';
+  document.getElementById('rw').style.display='none';
+  setSt('');
 }
 
-function setStatus(msg, type) {
-  const el = document.getElementById('status-msg');
-  if (!msg) { el.style.display = 'none'; return; }
-  el.className = 'status ' + (type || 'loading');
-  el.innerHTML = msg;
+function setSt(msg,type){
+  const el=document.getElementById('st');
+  if(!msg){ el.style.display='none'; return; }
+  el.className='status '+(type||'loading');
+  el.innerHTML=msg;
 }
 
-async function generate() {
-  const workerUrl = localStorage.getItem('gmp_worker_url');
-  if (!workerUrl) { openSettings(); return; }
-  if (!uploadedFile) { alert('請先上傳配方檔案'); return; }
+async function generate(){
+  const workerUrl=localStorage.getItem('gmp_worker');
+  if(!workerUrl){ openSet(); return; }
+  if(!uploadedFile){ alert('請先上傳配方檔案'); return; }
 
-  const btn = document.getElementById('btn-generate');
-  btn.disabled = true;
-  btn.innerHTML = '<svg class="spinner" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> AI 分析中…';
-  setStatus('<svg class="spinner" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>&nbsp;AI 正在分析配方，約需 30–60 秒…', 'loading');
+  const btn=document.getElementById('bg');
+  btn.disabled=true;
+  btn.innerHTML='<svg class="spin" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg> AI 分析中…';
+  setSt('<svg class="spin" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg>&nbsp;AI 分析配方中，約 30–60 秒…','loading');
 
-  const system = `你是一位 ISO 22716 化妝品 GMP 文件專家。
-請從使用者上傳的配方資料中，精確提取以下資訊並以繁體中文輸出：
+  const sys=`你是 ISO 22716 化妝品 GMP 文件專家。請從上傳的配方資料中精確提取所有資訊，以繁體中文輸出：
 
-1. 配方規格書（格式：表格，欄位：相別 | INCI名稱 | 中文名稱 | 單位含量% | 功能）
-2. 品管檢驗記錄表（含：外觀、顏色、pH值範圍、黏度、微生物限量、放行欄位）
-3. 批次製造記錄 BMR（含：製程步驟、溫度參數、設備、秤量記錄欄位）
+1. 配方規格書（表格格式，欄位：相別 | INCI名稱 | 中文名稱 | 單位含量% | 功能）
+2. 品管檢驗記錄表（外觀、顏色、pH值範圍、黏度、微生物限量、放行欄位）
+3. 批次製造記錄 BMR（製程步驟、溫度參數、設備、秤量記錄欄位）
 
-每份文件以「=== 文件名稱 ===」開頭。
-配方規格書的表格必須包含所有原料，使用 | 分隔欄位。`;
+每份文件以「=== 文件名稱 ===」開頭。配方規格書必須列出所有原料，用 | 分隔欄位。`;
 
   let messages;
-  if ((fileType === 'image' || fileType === 'pdf') && fileBase64) {
-    const mediaType = fileType === 'pdf' ? 'application/pdf' : (uploadedFile.type || 'image/jpeg');
-    messages = [{
-      role: 'user',
-      content: [
-        { type: fileType === 'pdf' ? 'document' : 'image',
-          source: { type: 'base64', media_type: mediaType, data: fileBase64 } },
-        { type: 'text', text: '請分析這份配方資料，產生完整的 GMP 文件（配方規格書、品管檢驗記錄表、BMR）。' }
-      ]
-    }];
+  if((fileType==='image'||fileType==='pdf')&&fileBase64){
+    const mt=fileType==='pdf'?'application/pdf':(uploadedFile.type||'image/jpeg');
+    messages=[{role:'user',content:[
+      {type:fileType==='pdf'?'document':'image',source:{type:'base64',media_type:mt,data:fileBase64}},
+      {type:'text',text:'請分析此配方資料，產生完整 GMP 文件（配方規格書、品管記錄表、BMR）。'}
+    ]}];
   } else {
-    messages = [{
-      role: 'user',
-      content: '以下是配方資料：\n\n' + (fileContent || '（無法讀取檔案內容，請根據檔名「' + uploadedFile.name + '」示範典型配方）') + '\n\n請產生完整的 GMP 文件。'
-    }];
+    messages=[{role:'user',content:'配方資料：\n\n'+(fileContent||'（檔案：'+uploadedFile.name+'）')+'\n\n請產生完整 GMP 文件。'}];
   }
 
-  try {
-    const resp = await fetch(workerUrl, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: MODEL, max_tokens: 4000, system, messages })
+  try{
+    const resp=await fetch(workerUrl,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({model:MODEL,max_tokens:4000,system:sys,messages})
     });
-    if (!resp.ok) {
-      const err = await resp.json();
-      throw new Error(err.error?.message || '呼叫 API 失敗');
-    }
-    const data = await resp.json();
-    const fullText = data.content.map(b => b.text || '').join('');
-    generatedDocs = parseDocs(fullText);
+    if(!resp.ok){ const e=await resp.json(); throw new Error(e.error?.message||'API 失敗'); }
+    const data=await resp.json();
+    const text=data.content.map(b=>b.text||'').join('');
+    generatedDocs=parseDocs(text);
     renderResult(generatedDocs);
-    setStatus('✓ 文件產生完成，可下載 Excel 秤料單', 'success');
-  } catch(err) {
-    setStatus('✗ 錯誤：' + err.message, 'error');
+    setSt('✓ 文件產生完成，可下載 Excel 秤料單（套用你的模板格式）','ok');
+  } catch(e){
+    setSt('✗ 錯誤：'+e.message,'err');
   } finally {
-    btn.disabled = false;
-    btn.innerHTML = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg> 產生秤料單';
+    btn.disabled=false;
+    btn.innerHTML='<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg> 產生秤料單';
   }
 }
 
-function parseDocs(text) {
-  const result = {};
-  const headers = [...text.matchAll(/={3,}([^=]+)={3,}/g)].map(m => m[1].trim());
-  const parts = text.split(/={3,}[^=]+={3,}/);
-  if (headers.length > 0 && parts.length > 1) {
-    headers.forEach((h, i) => { result[h] = (parts[i+1] || '').trim(); });
-  } else {
-    result['完整文件'] = text;
-  }
-  return result;
+function parseDocs(text){
+  const r={};
+  const hdrs=[...text.matchAll(/={3,}([^=]+)={3,}/g)].map(m=>m[1].trim());
+  const parts=text.split(/={3,}[^=]+={3,}/);
+  if(hdrs.length>0&&parts.length>1) hdrs.forEach((h,i)=>{ r[h]=(parts[i+1]||'').trim(); });
+  else r['完整文件']=text;
+  return r;
 }
 
-function renderResult(docs) {
-  const tabsEl = document.getElementById('doc-tabs');
-  const panelsEl = document.getElementById('doc-panels');
-  tabsEl.innerHTML = ''; panelsEl.innerHTML = '';
-  Object.keys(docs).forEach((key, i) => {
-    const tab = document.createElement('button');
-    tab.className = 'doc-tab' + (i===0?' active':'');
-    tab.textContent = key;
-    tab.onclick = () => {
-      document.querySelectorAll('.doc-tab').forEach(t=>t.classList.remove('active'));
-      document.querySelectorAll('.doc-panel').forEach(p=>p.classList.remove('active'));
-      tab.classList.add('active');
-      document.getElementById('panel-'+i).classList.add('active');
+function renderResult(docs){
+  const tabs=document.getElementById('tabs');
+  const panels=document.getElementById('panels');
+  tabs.innerHTML=''; panels.innerHTML='';
+  Object.keys(docs).forEach((k,i)=>{
+    const t=document.createElement('button');
+    t.className='tab'+(i===0?' on':'');
+    t.textContent=k;
+    t.onclick=()=>{
+      document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));
+      document.querySelectorAll('.panel').forEach(x=>x.classList.remove('on'));
+      t.classList.add('on');
+      document.getElementById('p'+i).classList.add('on');
     };
-    tabsEl.appendChild(tab);
-    const panel = document.createElement('div');
-    panel.className = 'doc-panel preview-box' + (i===0?' active':'');
-    panel.id = 'panel-'+i;
-    panel.textContent = docs[key];
-    panelsEl.appendChild(panel);
+    tabs.appendChild(t);
+    const p=document.createElement('div');
+    p.className='panel'+(i===0?' on':'');
+    p.id='p'+i; p.textContent=docs[k];
+    panels.appendChild(p);
   });
-  document.getElementById('result-area').style.display = 'block';
-  document.getElementById('result-area').scrollIntoView({behavior:'smooth',block:'start'});
+  document.getElementById('rw').style.display='block';
+  document.getElementById('rw').scrollIntoView({behavior:'smooth',block:'start'});
 }
 
-function downloadTxt() {
-  const all = Object.entries(generatedDocs).map(([k,v])=>'=== '+k+' ===\n\n'+v).join('\n\n\n');
-  const fname = (uploadedFile?.name.replace(/\.[^.]+$/,'') || 'GMP文件') + '_' + new Date().toISOString().split('T')[0] + '.txt';
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(new Blob([all],{type:'text/plain;charset=utf-8'}));
-  a.download = fname; a.click();
+function dlTxt(){
+  const all=Object.entries(generatedDocs).map(([k,v])=>'=== '+k+' ===\n\n'+v).join('\n\n\n');
+  const nm=(uploadedFile?.name.replace(/\.[^.]+$/,'')||'GMP')+`_${new Date().toISOString().split('T')[0]}.txt`;
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(new Blob([all],{type:'text/plain;charset=utf-8'}));
+  a.download=nm; a.click();
 }
 
-function parseIngredients(text) {
-  const rows = [];
-  let lastPhase = 'A';
-  for (const line of text.split('\n')) {
-    if (!line.startsWith('|')) continue;
-    const cells = line.split('|').map(c=>c.trim()).filter(c=>c);
-    if (!cells.length || cells[0]==='相別' || cells[0].startsWith('-')) continue;
-    const phase = cells[0].match(/^[A-Z]$/) ? cells[0] : lastPhase;
-    if (cells[0].match(/^[A-Z]$/)) lastPhase = phase;
-    const inci = cells[1] || '';
-    const pct = parseFloat(cells[3] || cells[2] || '') || 0;
-    if (inci && pct > 0) rows.push({phase, inci, pct});
+function parseIngs(text){
+  const rows=[]; let lastPh='A';
+  for(const line of text.split('\n')){
+    if(!line.startsWith('|')) continue;
+    const cells=line.split('|').map(c=>c.trim()).filter(c=>c);
+    if(!cells.length||cells[0]==='相別'||cells[0].startsWith('-')) continue;
+    const ph=cells[0].match(/^[A-Z]$/)?cells[0]:lastPh;
+    if(cells[0].match(/^[A-Z]$/)) lastPh=ph;
+    const inci=cells[1]||'';
+    const pct=parseFloat(cells[3]||cells[2]||'')||0;
+    if(inci&&pct>0) rows.push({ph,inci,pct});
   }
   return rows;
 }
 
-function downloadExcel() {
-  const fname = (uploadedFile?.name.replace(/\.[^.]+$/,'') || 'GMP秤料單') + '_' + new Date().toISOString().split('T')[0];
-  const formulaText = generatedDocs['配方規格書'] || Object.values(generatedDocs)[0] || '';
-  const ings = parseIngredients(formulaText);
-  const wb = XLSX.utils.book_new();
+async function dlExcel(){
+  const fname=(uploadedFile?.name.replace(/\.[^.]+$/,'')||'秤料單')+'_'+new Date().toISOString().split('T')[0];
+  const formulaTxt=generatedDocs['配方規格書']||Object.values(generatedDocs)[0]||'';
+  const ings=parseIngs(formulaTxt);
 
-  if (ings.length > 0) {
-    const batchG = 62500;
-    const aoa = [
-      ['機器清潔確認','','製造前','是□    否□','品   名',fname,'','','樣品批號',''],
-      ['','批   量','','','',batchG,'','g','日   期',new Date().toISOString().split('T')[0]],
-      [],[],
-      ['相別','廠商名稱','廠商編號','產品編號','原料批號','原  料  名  稱','INCI','單位含量','配方量','','秤 料 量','投料確認'],
-    ];
-    let lastPh = '';
-    ings.forEach((ing, i) => {
-      const sup = lookupSupplier(ing.inci);
-      const rowN = 6 + i;
-      aoa.push([
-        ing.phase !== lastPh ? ing.phase : '',
-        sup.company||'', sup.supplierCode||'', sup.productCode||'', '',
-        ing.inci, ing.inci, ing.pct,
-        {f:`H${rowN}*F3`}, 'Gm', '', ''
-      ]);
-      lastPh = ing.phase;
-    });
-    const totalR = 6 + ings.length;
-    aoa.push(['','','','','','','','',{f:`SUM(I6:I${totalR-1})`},'Gm']);
-    aoa.push(['','包材部分']);
-    const ws = XLSX.utils.aoa_to_sheet(aoa);
-    ws['!cols'] = [{wch:6},{wch:20},{wch:10},{wch:16},{wch:12},{wch:22},{wch:22},{wch:10},{wch:12},{wch:4},{wch:12},{wch:10}];
-    XLSX.utils.book_append_sheet(wb, ws, '秤料單');
+  // 嘗試用模板，若無則用純格式
+  if(templateBytes && ings.length>0){
+    await fillTemplate(fname, ings);
+  } else {
+    fallbackExcel(fname, ings);
+  }
+}
+
+async function fillTemplate(fname, ings){
+  // 讀取模板
+  const wb = XLSX.read(templateBytes, {type:'array', cellStyles:true, cellFormula:true});
+  const ws = wb.Sheets[wb.SheetNames[0]];
+
+  // 取得產品名稱（從檔名）
+  const prodName = uploadedFile?.name.replace(/\.[^.]+$/,'') || '';
+  const today = new Date().toISOString().split('T')[0];
+
+  // 填入表頭資訊
+  ws['F2'] = {v:prodName, t:'s'};   // 品名
+  ws['J2'] = {v:'', t:'s'};          // 樣品批號（留空）
+  ws['J3'] = {v:today, t:'s'};       // 日期
+
+  // 原料從第6列開始
+  const START = 6;
+  const DEFAULT_ROWS = 9;
+  const total = ings.length;
+
+  // 若原料超過9列，需插入列（SheetJS 支援有限，用複製方式）
+  if(total > DEFAULT_ROWS){
+    // 取第14列（最後一個預設原料列）的樣式為範本
+    // 先把現有的14以後的行下移
+    const extra = total - DEFAULT_ROWS;
+    // 複製15列以後的內容（合計/包材等）往下移
+    const moveFrom = START + DEFAULT_ROWS; // =15
+    const moveTo = moveFrom + extra;
+
+    // 找出所有 row >= moveFrom 的儲存格，往下移
+    const ref = XLSX.utils.decode_range(ws['!ref']);
+    for(let r = ref.e.r; r >= moveFrom-1; r--){
+      for(let c = ref.s.c; c <= ref.e.c; c++){
+        const oldAddr = XLSX.utils.encode_cell({r, c});
+        const newAddr = XLSX.utils.encode_cell({r: r+extra, c});
+        if(ws[oldAddr]){
+          ws[newAddr] = {...ws[oldAddr]};
+          // 修正公式中的列號參照
+          if(ws[newAddr].f){
+            ws[newAddr].f = ws[newAddr].f.replace(/I(\d+)/g, (_,n)=>`I${parseInt(n)+extra}`);
+            ws[newAddr].f = ws[newAddr].f.replace(/H(\d+)/g, (_,n)=>`H${parseInt(n)+extra}`);
+          }
+          delete ws[oldAddr];
+        }
+      }
+    }
+    // 更新 !ref
+    ws['!ref'] = XLSX.utils.encode_range({s:ref.s, e:{r:ref.e.r+extra, c:ref.e.c}});
+
+    // 插入新列（複製倒數第二個原料列的樣式）
+    for(let i=0; i<extra; i++){
+      const newRow = moveFrom + i;
+      for(let c=0; c<12; c++){
+        const addr = XLSX.utils.encode_cell({r:newRow-1, c});
+        const newAddr = XLSX.utils.encode_cell({r:newRow-1+DEFAULT_ROWS-1, c}); // 不動，只填值
+        // 簡單設樣式繼承即可，主要填值
+      }
+    }
   }
 
-  Object.entries(generatedDocs).forEach(([name, content]) => {
-    if (name==='配方規格書' && ings.length>0) return;
-    const rows = [];
-    content.split('\n').forEach(line => {
-      if (line.startsWith('|')) rows.push(line.split('|').map(c=>c.trim()).filter(c=>c));
-      else if (line.trim()) rows.push([line.trim()]);
-    });
-    const ws = XLSX.utils.aoa_to_sheet(rows.length ? rows : [[content]]);
-    ws['!cols'] = Array(20).fill({wch:20});
-    XLSX.utils.book_append_sheet(wb, ws, name.replace(/[\[\]\*\/\\\?:]/g,'').slice(0,31));
+  // 填入原料資料
+  let lastPh='';
+  ings.forEach((ing, i)=>{
+    const row = START + i; // 0-indexed = row-1 in SheetJS
+    const r = row - 1;
+
+    const sup = supLookup(ing.inci);
+
+    const setCell = (col, val, type) => {
+      const addr = XLSX.utils.encode_cell({r, c:col});
+      ws[addr] = {v:val, t:type||'s'};
+    };
+
+    setCell(0, ing.ph!==lastPh?ing.ph:'');           // A: 相別
+    setCell(1, sup.company||'');                       // B: 廠商名稱
+    setCell(2, sup.supplierCode||'');                  // C: 廠商編號
+    setCell(3, sup.productCode||'');                   // D: 產品編號
+    setCell(4, '');                                    // E: 原料批號
+    setCell(5, ing.inci);                              // F: 原料名稱
+    setCell(6, ing.inci);                              // G: INCI
+    ws[XLSX.utils.encode_cell({r,c:7})] = {v:ing.pct, t:'n'}; // H: 單位含量
+    ws[XLSX.utils.encode_cell({r,c:8})] = {f:`H${row}*$F$3`, t:'n'}; // I: 配方量
+    setCell(9, 'Gm');                                  // J: 單位
+
+    lastPh = ing.ph;
   });
 
-  XLSX.writeFile(wb, fname + '.xlsx');
+  // 更新合計公式
+  const totalRow = START + total;
+  ws[XLSX.utils.encode_cell({r:totalRow-1, c:8})] = {f:`SUM(I${START}:I${totalRow-1})`, t:'n'};
+  ws[XLSX.utils.encode_cell({r:totalRow-1, c:9})] = {v:'Gm', t:'s'};
+
+  XLSX.writeFile(wb, fname+'.xlsx');
+}
+
+function fallbackExcel(fname, ings){
+  // 備用：若模板無法載入，產生基本格式
+  const wb = XLSX.utils.book_new();
+  const aoa = [
+    ['機器清潔確認','','製造前','是□    否□','品   名',fname,'','','樣品批號',''],
+    ['','批   量','','','',62500,'','g','日   期',new Date().toISOString().split('T')[0]],
+    [],[],
+    ['相別','廠商名稱','廠商編號','產品編號','原料批號','原  料  名  稱','INCI','單位含量','配方量','','秤 料 量','投料確認'],
+  ];
+  let last='';
+  ings.forEach((ing,i)=>{
+    const sup=supLookup(ing.inci);
+    const rn=6+i;
+    aoa.push([ing.ph!==last?ing.ph:'',sup.company||'',sup.supplierCode||'',sup.productCode||'','',ing.inci,ing.inci,ing.pct,{f:`H${rn}*F3`},'Gm','','']);
+    last=ing.ph;
+  });
+  aoa.push(['','','','','','','','',{f:`SUM(I6:I${5+ings.length})`},'Gm']);
+  aoa.push(['','包材部分']);
+  const ws=XLSX.utils.aoa_to_sheet(aoa);
+  ws['!cols']=[{wch:6},{wch:20},{wch:10},{wch:16},{wch:12},{wch:22},{wch:22},{wch:10},{wch:12},{wch:4},{wch:12},{wch:10}];
+  XLSX.utils.book_append_sheet(wb,ws,'秤料單');
+  XLSX.writeFile(wb,fname+'.xlsx');
 }
 
 init();
