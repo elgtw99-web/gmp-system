@@ -6,6 +6,7 @@
 <title>ISO 22716 GMP 文件產生系統</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=DM+Mono:wght@400;500&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -577,6 +578,10 @@ C相  防腐劑 (Phenoxyethanol)  0.80%"></textarea>
             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
             下載 .txt
           </button>
+          <button class="btn" onclick="downloadExcel()" style="font-size:12px;padding:6px 12px;background:#1D6F42;color:#fff;border-color:#1D6F42;">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            下載 Excel
+          </button>
         </div>
       </div>
       <div class="doc-tabs" id="doc-tabs" style="margin:12px 0 8px;"></div>
@@ -930,6 +935,35 @@ function downloadTxt() {
   a.href = URL.createObjectURL(blob);
   a.download = prodName + '_GMP文件_' + new Date().toISOString().split('T')[0] + '.txt';
   a.click();
+}
+
+function downloadExcel() {
+  const prodName = document.getElementById('prod-name').value || 'GMP文件';
+  const date = new Date().toISOString().split('T')[0];
+
+  const wb = XLSX.utils.book_new();
+
+  Object.entries(generatedDocs).forEach(([sheetName, content]) => {
+    const lines = content.split('\n');
+    const rows = [];
+    lines.forEach(line => {
+      if (line.startsWith('|')) {
+        const cells = line.split('|').map(c => c.trim()).filter(c => c !== '');
+        rows.push(cells);
+      } else if (line.trim()) {
+        rows.push([line.trim()]);
+      }
+    });
+    if (rows.length === 0) rows.push([content]);
+    const ws = XLSX.utils.aoa_to_sheet(rows);
+
+    ws['!cols'] = Array(20).fill({ wch: 20 });
+
+    const safeName = sheetName.replace(/[\[\]\*\/\\\?:]/g, '').slice(0, 31);
+    XLSX.utils.book_append_sheet(wb, ws, safeName);
+  });
+
+  XLSX.writeFile(wb, prodName + '_GMP文件_' + date + '.xlsx');
 }
 
 function saveHistory(prodName, prodCode, docs, text) {
